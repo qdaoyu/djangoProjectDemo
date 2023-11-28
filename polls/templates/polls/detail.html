@@ -1,0 +1,35 @@
+<style>
+    .center-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* 设置容器的高度占据整个视窗 */
+    }
+
+    .center-container fieldset {
+        text-align: center; /* 将 fieldset 内容居中对齐 */
+    }
+
+    .center-container input[type="submit"] {
+        margin-top: 10px; /* 如果有提交按钮，留一些间距 */
+    }
+</style>
+
+<div class="center-container">
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h1>{{ question.question_text }}</h1></legend>
+            <p></p>
+            <p></p>
+            <p></p>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            {% for choice in question.choice_set.all %}
+                <input type="button" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+            {% endfor %}
+        </fieldset>
+        <input type="submit" value="Vote">
+    </form>
+</div>

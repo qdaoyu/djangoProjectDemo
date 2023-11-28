@@ -1,0 +1,22 @@
+<!-- 为了让教程看起来不那么长，所有的模板文件都只写出了核心代码。在你自己创建的项目中，你应该使用 完整的 HTML 文档 -->
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        
+        {% comment %} <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> {% endcomment %}
+        {% comment %} 硬编码和强耦合的链接，对于一个包含很多应用的项目来说，修改起来是十分困难的。然而，因为你在 polls.urls 的 url() 函数中通过 name 参数为 URL 定义了名字， {% endcomment %}
+        {% comment %} 你可以使用 {% url %} 标签代替它： {% endcomment %}
+        {% comment %} <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li> 在url.py中加了app_name，所以这行代码执行会失败，因为要指定哪个app的detail {% endcomment %}
+        {% comment %} 如果你想改变投票详情视图的 URL，比如想改成 polls/specifics/12/ ，你不用在模板里修改任何东西（包括其它模板），只要在 polls/urls.py 里稍微修改一下就行：
+        ... {% endcomment %}
+        {% comment %} # added the word 'specifics'
+        path('specifics/<int:question_id>/', views.detail, name='detail'),
+        ... {% endcomment %}
+
+        {% comment %} 修改为指向具有命名空间的详细视图： {% endcomment %}
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
